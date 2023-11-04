@@ -1,0 +1,27 @@
+version: '3.3' 
+
+services:
+  reverseproxy:
+    container_name: reverse-proxy-nginx
+    ports:
+      - '8001:8001'
+      - '8000:8000'
+    volumes:
+      - ./proxy-conf/proxy.conf:/etc/nginx/conf.d/proxy.conf:ro
+    environment:
+      - PROXY=1
+    restart: always
+    image: owasp/modsecurity-crs:nginx-alpine
+    # networks:
+    #   reverse-proxy:
+    #     aliases:
+    #       - reverse-proxy-nginx
+  backend:
+    image: vulnerables/web-dvwa
+    ports:
+      - 8080:80
+
+  backend1:
+    image: vulnerables/web-dvwa
+    ports:
+      - 8081:80
